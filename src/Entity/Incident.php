@@ -44,6 +44,7 @@ class Incident
     public function __construct() {
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->status = 'Nouveau'; // Statut par défaut
     }
 
     public function getId(): ?int
@@ -149,7 +150,6 @@ class Incident
     public function setCampus(string $Campus): static
     {
         $this->Campus = $Campus;
-
         return $this;
     }
 }

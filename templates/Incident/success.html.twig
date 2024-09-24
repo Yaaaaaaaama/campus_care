@@ -1,0 +1,11 @@
+{# templates/incident/success.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Incident Signalé{% endblock %}
+
+{% block body %}
+    <h1>Incident signalé avec succès !</h1>
+    <p>Merci d'avoir signalé l'incident. Nous nous en occupons rapidement.</p>
+    <a href="{{ path('homepage') }}">Signaler un autre incident</a> {# Change to homepage if necessary #}
+{% endblock %}
