@@ -17,11 +17,15 @@ class Comment
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $incident = null;
+    #[ORM\ManyToOne(targetEntity: Incident::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Incident $incident = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $user = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null; // Changement ici
+
+    // Getters et setters...
 
     public function getId(): ?int
     {
@@ -36,31 +40,28 @@ class Comment
     public function setContent(string $content): static
     {
         $this->content = $content;
-
         return $this;
     }
 
-    public function getIncident(): ?string
+    public function getIncident(): ?Incident
     {
         return $this->incident;
     }
 
-    public function setIncident(string $incident): static
+    public function setIncident(?Incident $incident): static
     {
         $this->incident = $incident;
-
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getUser(): ?User
     {
-        return $this->user;
+        return $this->user; // Getter pour l'utilisateur
     }
 
-    public function setUser(string $user): static
+    public function setUser(User $user): static
     {
-        $this->user = $user;
-
+        $this->user = $user; // Setter pour l'utilisateur
         return $this;
     }
 }

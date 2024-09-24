@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\IncidentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: IncidentRepository::class)]
 class Incident
@@ -23,14 +25,23 @@ class Incident
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $user = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'incidents')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Category = null;
+    private ?string $category = null;
+
+    #[ORM\OneToMany(mappedBy: 'incident', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
+    private Collection $comments;
+
+    public function __construct() {
+        $this->comments = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -45,7 +56,6 @@ class Incident
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -57,7 +67,6 @@ class Incident
     public function setLocation(string $location): static
     {
         $this->location = $location;
-
         return $this;
     }
 
@@ -69,19 +78,17 @@ class Incident
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(string $user): static
+    public function setUser(User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -93,19 +100,41 @@ class Incident
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
     public function getCategory(): ?string
     {
-        return $this->Category;
+        return $this->category;
     }
 
-    public function setCategory(string $Category): static
+    public function setCategory(string $category): static
     {
-        $this->Category = $Category;
+        $this->category = $category;
+        return $this;
+    }
 
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setIncident($this);
+        }
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            if ($comment->getIncident() === $this) {
+                $comment->setIncident(null);
+            }
+        }
         return $this;
     }
 }
