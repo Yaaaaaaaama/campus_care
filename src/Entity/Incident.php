@@ -38,6 +38,9 @@ class Incident
     #[ORM\OneToMany(mappedBy: 'incident', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private Collection $comments;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Campus = null;
+
     public function __construct() {
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
@@ -135,6 +138,18 @@ class Incident
                 $comment->setIncident(null);
             }
         }
+        return $this;
+    }
+
+    public function getCampus(): ?string
+    {
+        return $this->Campus;
+    }
+
+    public function setCampus(string $Campus): static
+    {
+        $this->Campus = $Campus;
+
         return $this;
     }
 }
