@@ -43,14 +43,14 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
-
-        // Rediriger vers la page d'accueil après connexion réussie
-        return new RedirectResponse($this->urlGenerator->generate('homepage'));
+{
+    if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        return new RedirectResponse($targetPath);
     }
+
+    // Redirection vers la page d'accueil après connexion
+    return new RedirectResponse($this->urlGenerator->generate('homepage'));
+}
 
     protected function getLoginUrl(Request $request): string
     {
