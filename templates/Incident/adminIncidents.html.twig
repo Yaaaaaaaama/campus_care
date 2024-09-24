@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des incidents{% endblock %}
+
+{% block body %}
+    <h1>Gestion des incidents</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Catégorie</th>
+                <th>Description</th>
+                <th>Date de signalement</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for incident in incidents %}
+                <tr>
+                    <td>{{ incident.id }}</td>
+                    <td>{{ incident.category }}</td>
+                    <td>{{ incident.description }}</td>
+                    <td>{{ incident.createdAt|date('d/m/Y H:i') }}</td>
+                    <td>{{ incident.status }}</td>
+                    <td>
+                        <a href="{{ path('admin_incident_edit', { 'id': incident.id }) }}" class="btn btn-primary">Modifier le statut</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucun incident signalé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

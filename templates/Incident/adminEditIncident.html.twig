@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le statut de l'incident{% endblock %}
+
+{% block body %}
+    <h1>Modifier le statut de l'incident</h1>
+
+    {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status, { 'attr': { 'class': 'form-control' } }) }}
+            {{ form_errors(form.status) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin_incidents') }}" class="btn btn-secondary mt-3">Retour à la liste des incidents</a>
+{% endblock %}

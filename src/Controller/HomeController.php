@@ -9,37 +9,37 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'homepage')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Création d'un nouvel incident
+        // Rediriger les administrateurs vers le tableau de bord admin
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_incidents');
+        }
+
+        // Création d'un nouvel incident pour les utilisateurs classiques
         $incident = new Incident();
         $form = $this->createForm(IncidentType::class, $incident);
         $form->handleRequest($request);
 
-        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Remplir le champ user avec l'utilisateur connecté
             $incident->setUser($this->getUser());
-            
-            // Persister et enregistrer l'incident
             $entityManager->persist($incident);
             $entityManager->flush();
 
-            // Rediriger vers la page de succès
-            return $this->redirectToRoute('incident_success');
+            $this->addFlash('success', 'Incident signalé avec succès !');
+            return $this->redirectToRoute('homepage');
         }
 
-        // Affichage de la vue avec le formulaire
-        return $this->render('home/index.html.twig', [
+        return $this->render('Home/index.html.twig', [
             'controller_name' => 'HomeController',
             'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/incident/success', name: 'incident_success')]
     public function success(): Response

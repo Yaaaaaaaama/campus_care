@@ -44,7 +44,7 @@ class Incident
     public function __construct() {
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
-        $this->status = 'Nouveau'; // Statut par défaut
+        $this->status = 'En attente'; // Statut par défaut
     }
 
     public function getId(): ?int
