@@ -3,14 +3,55 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <h1>Inscription</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2>Inscription</h2>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.firstname) }}
-        {{ form_row(registrationForm.lastname) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword.first) }}
-        {{ form_row(registrationForm.plainPassword.second) }}
-        <button class="btn">S'inscrire</button>
-    {{ form_end(registrationForm) }}
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-person-fill"></i> Prénom</label>
+                            {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre prénom'}}) }}
+                            {{ form_errors(registrationForm.firstname) }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-person-fill"></i> Nom</label>
+                            {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom'}}) }}
+                            {{ form_errors(registrationForm.lastname) }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-envelope-fill"></i> Email</label>
+                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@domaine.com'}}) }}
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-lock-fill"></i> Mot de passe</label>
+                            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Entrez un mot de passe sécurisé'}}) }}
+                            {{ form_errors(registrationForm.plainPassword.first) }}
+                            <small class="form-text text-muted">Le mot de passe doit contenir au moins 8 caractères.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-lock-fill"></i> Confirmez le mot de passe</label>
+                            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(registrationForm.plainPassword.second) }}
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                        </div>
+
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

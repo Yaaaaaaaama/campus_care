@@ -6,15 +6,24 @@ use App\Entity\Incident;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class IncidentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('campus', ChoiceType::class, [ // Champ de sélection pour le campus
+                'choices' => [
+                    'Campus Paris' => 'paris',
+                    'Campus Lille' => 'lille',
+                    'Campus Montpellier' => 'montpellier',
+                ],
+                'label' => 'Sélectionnez le campus'
+            ])
             ->add('category', ChoiceType::class, [ // Champ de sélection pour la catégorie
                 'choices' => [
                     'Technique' => 'technique',
@@ -24,10 +33,6 @@ class IncidentType extends AbstractType
                     'Autres' => 'autres',
                 ],
                 'label' => 'Catégorie'
-            ])
-            ->add('description', TextareaType::class, [ // Champ de texte pour la description
-                'label' => 'Description de l\'incident',
-                'attr' => ['placeholder' => 'Décrivez le problème rencontré']
             ])
             ->add('location', ChoiceType::class, [ // Champ de sélection pour la localisation
                 'choices' => [ // Liste des choix pour la localisation
@@ -41,18 +46,29 @@ class IncidentType extends AbstractType
                 'label' => 'Localisation',
                 'placeholder' => 'Sélectionnez la localisation'
             ])
-            ->add('campus', ChoiceType::class, [ // Champ de sélection pour le campus
-                'choices' => [
-                    'Campus Paris' => 'paris',
-                    'Campus Lille' => 'lille',
-                    'Campus Montpellier' => 'montpellier',
-                ],
-                'label' => 'Sélectionnez le campus'
+            ->add('description', TextareaType::class, [ // Champ de texte pour la description
+                'label' => 'Description de l\'incident',
+                'attr' => ['placeholder' => 'Décrivez le problème rencontré']
             ])
-            ->add('submit', SubmitType::class, [ // Bouton pour soumettre le formulaire
-                'label' => 'Signaler l\'incident',
-                'attr' => ['class' => 'btn btn-primary']
+            ->add('photo', FileType::class, [
+                'label' => 'Ajouter une photo (fichier JPG ou PNG ou prendre une photo)',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png',
+                ],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image au format JPG ou PNG',
+                    ])
+                ],
             ]);
+            
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -3,26 +3,38 @@
 namespace App\Controller;
 
 use App\Entity\Incident;
+use App\Form\IncidentFilterType;
 use App\Form\AdminIncidentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AdminController extends AbstractController
 {
-
     #[Route('/admin/incidents', name: 'admin_incidents')]
     public function listIncidents(EntityManagerInterface $entityManager, Request $request): Response
     {
-        // Récupérer tous les incidents par ordre décroissant (par date de création)
-        $incidents = $entityManager->getRepository(Incident::class)->findBy([], ['createdAt' => 'DESC']);
+        // Créer le formulaire de filtre
+        $form = $this->createForm(IncidentFilterType::class);
+        $form->handleRequest($request);
 
-        // Rendre la vue avec la liste des incidents
+        // Récupérer tous les incidents ou filtrer par salle
+        $criteria = [];
+        if ($form->isSubmitted() && $form->isValid()) {
+            $location = $form->get('location')->getData();
+            if ($location) {
+                $criteria['location'] = $location;
+            }
+        }
+
+        $incidents = $entityManager->getRepository(Incident::class)->findBy($criteria, ['createdAt' => 'DESC']);
+
+        // Rendre la vue avec la liste des incidents et le formulaire de filtre
         return $this->render('Incident/adminIncidents.html.twig', [
             'incidents' => $incidents,
+            'form' => $form->createView(),
         ]);
     }
 

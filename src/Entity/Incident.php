@@ -41,6 +41,9 @@ class Incident
     #[ORM\Column(length: 255)]
     private ?string $Campus = null;
 
+    #[ORM\Column(length: 255, nullable: true)] // Propriété pour stocker le chemin de la photo
+    private ?string $photo = null;
+
     public function __construct() {
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
@@ -150,6 +153,17 @@ class Incident
     public function setCampus(string $Campus): static
     {
         $this->Campus = $Campus;
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
         return $this;
     }
 }

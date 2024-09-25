@@ -5,62 +5,75 @@
 {% block title %}Page d'accueil{% endblock %}
 
 {% block body %}
-    <h1>Bienvenue sur la page d'accueil, {{ app.user.firstname }} !</h1>
-    <p>Vous êtes connecté en tant que {{ app.user.email }}.</p>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Bienvenue, {{ app.user.firstname }} !</h1>
+        <p class="text-center text-muted">Vous êtes connecté en tant que {{ app.user.email }}.</p>
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-
-    {# Affichage des erreurs globales du formulaire #}
-    {% if form is defined and form_errors(form) %}
-        <div class="alert alert-danger">
-            {{ form_errors(form) }}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Informations Utilisateur</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Nom :</strong> {{ app.user.firstname }} {{ app.user.lastname }}</p>
+                <p><strong>Email :</strong> {{ app.user.email }}</p>
+            </div>
         </div>
-    {% endif %}
 
-    {# Ajoutez ici votre formulaire si vous en avez un #}
-    {% if form is defined %}
-        <div class="incident-form">
-            {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-
-            <div class="form-group">
-                <label>{{ form_label(form.category, 'Catégorie de l\'incident') }}</label>
-                <div>
-                    {{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.category) }}
-                </div>
+        {# Affichage des messages de succès #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
             </div>
+        {% endfor %}
 
-            <div class="form-group">
-                <label>{{ form_label(form.description, 'Description') }}</label>
-                <div>
-                    {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Décrivez le problème rencontré...'} }) }}
-                    {{ form_errors(form.description) }}
-                </div>
+        {# Affichage des erreurs du formulaire #}
+        {% if form is defined and form_errors(form) %}
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-circle-fill me-2"></i> {{ form_errors(form) }}
             </div>
+        {% endif %}
 
-            <div class="form-group">
-                <label>{{ form_label(form.location, 'Localisation') }}</label>
-                <div>
-                    {{ form_widget(form.location, { 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.location) }}
-                </div>
-            </div>
+        {# Formulaire de signalement d'incident #}
+        {% if form is defined %}
+            <div class="incident-form card p-4">
+                <h4 class="mb-3">Signaler un incident</h4>
+                {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
 
-            <div class="form-group">
-                <label>{{ form_label(form.campus, 'Campus') }}</label>
-                <div>
+                <div class="mb-3">
+                    <label>{{ form_label(form.campus, 'Campus') }}</label>
                     {{ form_widget(form.campus, { 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.campus) }}
                 </div>
-            </div>
 
-            <div class="form-group">
+                <div class="mb-3">
+                    <label>{{ form_label(form.category, 'Catégorie de l\'incident') }}</label>
+                    {{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.category) }}
+                </div>
+
+                <div class="mb-3">
+                    <label>{{ form_label(form.location, 'Localisation') }}</label>
+                    {{ form_widget(form.location, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.location) }}
+                </div>
+
+                <div class="mb-3">
+                    <label>{{ form_label(form.description, 'Description') }}</label>
+                    {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Décrivez le problème rencontré...'} }) }}
+                    {{ form_errors(form.description) }}
+                </div>
+                <div class="mb-3">
+                    <label>{{ form_label(form.photo, 'Photo de l\'incident') }}</label>
+                    {{ form_widget(form.photo, { 'attr': {'class': 'form-control', 'accept': 'image/*', 'capture': 'environment'} }) }}
+                    <small class="form-text text-muted">
+                        Vous pouvez prendre une photo directement avec votre appareil ou sélectionner un fichier.
+                    </small>
+                    {{ form_errors(form.photo) }}
+                </div>
+
                 <button type="submit" class="btn btn-primary">Signaler l'incident</button>
+                {{ form_end(form) }}
             </div>
-
-            {{ form_end(form) }}
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}
