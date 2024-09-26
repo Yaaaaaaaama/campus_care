@@ -48,16 +48,13 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // Vérification des rôles de l'utilisateur
-        $roles = $token->getRoleNames(); // Utiliser getRoleNames() pour obtenir les rôles
+        $roles = $token->getRoleNames(); 
 
-        // Redirection en fonction des rôles
         if (in_array('ROLE_ADMIN', $roles)) {
-            return new RedirectResponse($this->urlGenerator->generate('admin_incidents')); // Route pour l'admin
+            return new RedirectResponse($this->urlGenerator->generate('admin_incidents')); 
         }
 
-        // Redirection par défaut pour les utilisateurs
-        return new RedirectResponse($this->urlGenerator->generate('user_incidents')); // Route utilisateur
+        return new RedirectResponse($this->urlGenerator->generate('user_incidents')); 
     }
 
     protected function getLoginUrl(Request $request): string

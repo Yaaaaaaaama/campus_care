@@ -15,12 +15,10 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'homepage')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Rediriger les administrateurs vers le tableau de bord admin
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_incidents');
         }
 
-        // Création d'un nouvel incident pour les utilisateurs classiques
         $incident = new Incident();
         $form = $this->createForm(IncidentType::class, $incident);
         $form->handleRequest($request);

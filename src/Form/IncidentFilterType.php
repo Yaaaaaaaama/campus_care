@@ -30,7 +30,6 @@ class IncidentFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Pas de classe de données ici, car c'est un filtre
         ]);
     }
 }

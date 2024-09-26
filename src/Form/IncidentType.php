@@ -16,7 +16,7 @@ class IncidentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('campus', ChoiceType::class, [ // Champ de sélection pour le campus
+            ->add('campus', ChoiceType::class, [ 
                 'choices' => [
                     'Campus Paris' => 'paris',
                     'Campus Lille' => 'lille',
@@ -24,7 +24,7 @@ class IncidentType extends AbstractType
                 ],
                 'label' => 'Sélectionnez le campus'
             ])
-            ->add('category', ChoiceType::class, [ // Champ de sélection pour la catégorie
+            ->add('category', ChoiceType::class, [ 
                 'choices' => [
                     'Technique' => 'technique',
                     'Matériel' => 'matériel',
@@ -34,8 +34,8 @@ class IncidentType extends AbstractType
                 ],
                 'label' => 'Catégorie'
             ])
-            ->add('location', ChoiceType::class, [ // Champ de sélection pour la localisation
-                'choices' => [ // Liste des choix pour la localisation
+            ->add('location', ChoiceType::class, [ 
+                'choices' => [ 
                     'Salle 101' => 'salle101',
                     'Salle 102' => 'salle102',
                     'Salle 103' => 'salle103',
@@ -46,7 +46,7 @@ class IncidentType extends AbstractType
                 'label' => 'Localisation',
                 'placeholder' => 'Sélectionnez la localisation'
             ])
-            ->add('description', TextareaType::class, [ // Champ de texte pour la description
+            ->add('description', TextareaType::class, [ 
                 'label' => 'Description de l\'incident',
                 'attr' => ['placeholder' => 'Décrivez le problème rencontré']
             ])
@@ -74,7 +74,7 @@ class IncidentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Incident::class, // L'entité liée au formulaire
+            'data_class' => Incident::class, 
         ]);
     }
 }

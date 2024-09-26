@@ -19,9 +19,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Incident::class)]
     private Collection $incidents;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
-    private Collection $comments;
-
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
@@ -104,12 +101,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getSalt(): ?string
     {
-        return null; // Pas de "salt"
+        return null; 
     }
 
     public function getUserIdentifier(): string
     {
-        return $this->email; // Utilise l'email comme identifiant
+        return $this->email; 
     }
 
     public function eraseCredentials(): void

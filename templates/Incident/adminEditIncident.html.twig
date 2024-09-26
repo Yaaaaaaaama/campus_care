@@ -6,14 +6,12 @@
     <div class="container mt-5">
         <h1 class="text-primary mb-4 text-center">Modifier le Statut de l'Incident</h1>
 
-        {# Affichage des erreurs du formulaire #}
         {% if form_errors(form) %}
             <div class="alert alert-danger">
                 {{ form_errors(form) }}
             </div>
         {% endif %}
 
-        {# Démarrage du formulaire #}
         <div class="card shadow-sm">
             <div class="card-body">
                 {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
@@ -30,7 +28,6 @@
             </div>
         </div>
 
-        {# Lien de retour à la liste des incidents #}
         <div class="text-center mt-4">
             <a href="{{ path('admin_incidents') }}" class="btn btn-secondary">Retour à la Liste des Incidents</a>
         </div>

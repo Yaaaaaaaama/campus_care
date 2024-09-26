@@ -48,14 +48,14 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                     ]),
                 ],
-                'mapped' => false, // Ne lie pas directement à l'entité User car le mot de passe sera encodé plus tard
+                'mapped' => false, 
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class, // L'entité associée au formulaire
+            'data_class' => User::class, 
         ]);
     }
 }

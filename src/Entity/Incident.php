@@ -35,19 +35,17 @@ class Incident
     #[ORM\Column(length: 255)]
     private ?string $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'incident', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
-    private Collection $comments;
+
 
     #[ORM\Column(length: 255)]
     private ?string $Campus = null;
 
-    #[ORM\Column(length: 255, nullable: true)] // Propriété pour stocker le chemin de la photo
+    #[ORM\Column(length: 255, nullable: true)] 
     private ?string $photo = null;
 
     public function __construct() {
-        $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
-        $this->status = 'En attente'; // Statut par défaut
+        $this->status = 'En attente'; 
     }
 
     public function getId(): ?int
@@ -118,30 +116,6 @@ class Incident
     public function setCategory(string $category): static
     {
         $this->category = $category;
-        return $this;
-    }
-
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setIncident($this);
-        }
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            if ($comment->getIncident() === $this) {
-                $comment->setIncident(null);
-            }
-        }
         return $this;
     }
 

@@ -21,7 +21,6 @@ class AdminIncidentType extends AbstractType
                 ],
                 'label' => 'Statut de l\'incident',
             ])
-            // Autres champs à modifier par l'admin si besoin
         ;
     }
 
