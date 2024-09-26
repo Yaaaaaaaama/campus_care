@@ -43,14 +43,22 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-{
-    if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-        return new RedirectResponse($targetPath);
-    }
+    {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+            return new RedirectResponse($targetPath);
+        }
 
-    // Redirection vers la page d'accueil après connexion
-    return new RedirectResponse($this->urlGenerator->generate('homepage'));
-}
+        // Vérification des rôles de l'utilisateur
+        $roles = $token->getRoleNames(); // Utiliser getRoleNames() pour obtenir les rôles
+
+        // Redirection en fonction des rôles
+        if (in_array('ROLE_ADMIN', $roles)) {
+            return new RedirectResponse($this->urlGenerator->generate('admin_incidents')); // Route pour l'admin
+        }
+
+        // Redirection par défaut pour les utilisateurs
+        return new RedirectResponse($this->urlGenerator->generate('user_incidents')); // Route utilisateur
+    }
 
     protected function getLoginUrl(Request $request): string
     {

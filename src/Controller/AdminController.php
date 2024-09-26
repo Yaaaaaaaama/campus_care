@@ -20,16 +20,25 @@ class AdminController extends AbstractController
         $form = $this->createForm(IncidentFilterType::class);
         $form->handleRequest($request);
 
-        // Récupérer tous les incidents ou filtrer par salle
+        // Initialiser les critères pour la recherche
         $criteria = [];
+
+        // Si le formulaire est soumis et valide, récupérer les données du filtre
         if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérer la localisation du filtre
             $location = $form->get('location')->getData();
+
+            // Si une localisation est sélectionnée, l'ajouter aux critères
             if ($location) {
-                $criteria['location'] = $location;
+                $criteria['location'] = $location; // Ajouter le filtre sur la localisation
             }
         }
 
-        $incidents = $entityManager->getRepository(Incident::class)->findBy($criteria, ['createdAt' => 'DESC']);
+        // Récupérer les incidents en fonction des critères, triés par date décroissante (du plus récent au plus ancien)
+        $incidents = $entityManager->getRepository(Incident::class)->findBy(
+            $criteria,
+            ['createdAt' => 'DESC'] // Tri par date de création
+        );
 
         // Rendre la vue avec la liste des incidents et le formulaire de filtre
         return $this->render('Incident/adminIncidents.html.twig', [

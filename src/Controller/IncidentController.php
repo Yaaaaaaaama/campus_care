@@ -27,6 +27,9 @@ class IncidentController extends AbstractController
             // Log le début de la soumission du formulaire
             $logger->info('Formulaire soumis avec succès.');
 
+            // Lier l'incident à l'utilisateur
+            $incident->setUser($this->getUser());
+
             // Récupération du fichier photo
             $photo = $form->get('photo')->getData();
 
@@ -67,8 +70,24 @@ class IncidentController extends AbstractController
             return $this->redirectToRoute('incident_success'); 
         }
 
-        return $this->render('incident/new.html.twig', [
+        return $this->render('home/index.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/incidents", name="user_incidents")
+     */
+    public function userIncidents(EntityManagerInterface $entityManager)
+    {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        // Récupérer les incidents de l'utilisateur
+        $incidents = $entityManager->getRepository(Incident::class)->findBy(['user' => $user]);
+
+        return $this->render('incident/userIncident.html.twig', [
+            'incidents' => $incidents,
         ]);
     }
 }

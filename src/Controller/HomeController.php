@@ -31,7 +31,7 @@ class HomeController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Incident signalé avec succès !');
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('incident_success');
         }
 
         return $this->render('Home/index.html.twig', [
